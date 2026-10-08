@@ -30,11 +30,11 @@ summary{cursor:pointer}.err{color:var(--err)}.ok{color:var(--ok)}
 <h1>Primærvakt – turnus til kalender</h1>
 <p class="mut">Lager kalenderfiler (.ics) for hver ansatt ut fra grunnturnusen. Alt skjer i nettleseren din, og ingenting lagres noe sted.</p>
 
-<div class="card"><h2>1. Når starter turnusen, og hvor lenge skal den gå?</h2>
+<div class="card"><h2>1. Velg samhørende turnusuke og kalenderuke, angi deretter stopptid for kalenderen</h2>
 <div class="grid">
-<label>Turnusuke<input type="number" id="n0" min="1" value="1"></label>
-<label>starter i uke nr.<input type="number" id="w0" min="1" max="53" value="35"></label>
-<label>i år<input type="number" id="y0" min="2000" max="2100" value="2026"></label></div>
+<label>Turnusuke (1-19)<input type="number" id="n0" min="1" value="1"></label>
+<label>Starter i uke nr.<input type="number" id="w0" min="1" max="53" value="35"></label>
+<label>År<input type="number" id="y0" min="2000" max="2100" value="2026"></label></div>
 <p class="mut" style="margin:4px 0 12px" id="s0"></p>
 <div class="grid">
 <label>Slutt: til og med uke nr.<input type="number" id="w1" min="1" max="53" value="25"></label>
@@ -43,7 +43,7 @@ summary{cursor:pointer}.err{color:var(--err)}.ok{color:var(--ok)}
 <p class="mut" style="margin:4px 0 12px" id="s1"></p>
 <label>Navn (valgfritt, brukes i kalendernavn og filnavn)<input type="text" id="nm" placeholder="f.eks. Kari Nordmann"></label>
 <label style="margin:4px 0 8px"><input type="checkbox" id="fri" style="width:auto"> Legg inn «fri e. vakt» som heldagshendelse «Fri etter nattevakt»</label>
-<p class="mut">Ukenumre er vanlige norske ukenumre (ISO). Etter siste turnusuke starter turnusen på uke 1 igjen.</p>
+<p class="mut">Ukenumre er vanlige norske ukenumre (ISO). Etter siste turnusuke (uke 19) starter turnusen på uke 1 igjen.</p>
 <div id="msg"></div></div>
 
 <div class="card"><h2>2. Forhåndsvisning og nedlasting</h2>
