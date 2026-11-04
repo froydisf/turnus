@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="no"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Sekundærvakt – turnus til kalender</title>
+<title>Sekundærvakt til kalender</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <style>
@@ -27,17 +27,17 @@ summary{cursor:pointer}.err{color:var(--err)}.ok{color:var(--ok)}
 .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
 </style></head><body><main>
 <p style="margin:0"><a href="./" style="color:var(--ac)">← Tilbake til forsiden</a></p>
-<h1>Sekundærvakt – turnus til kalender</h1>
-<p class="mut">Lager kalenderfiler (.ics) for hver ansatt ut fra grunnturnusen. Alt skjer i nettleseren din, og ingenting lagres noe sted.</p>
+<h1>Sekundærvakt – kalenderfilgenerator</h1>
+<p class="mut">Her kan du lage en personlig nedlastbar kalenderfil for turnusen din. Da slippe du legge inn manuelt eller vente på at vaktene blir lagt inn i mingat :-)</p>
 
-<div class="card"><h2>1. Når starter turnusen, og hvor lenge skal den gå?</h2>
+<div class="card"><h2>1. I hvilken kalenderuke skal turnusen starte, og hvor lenge skal den gå? Merk at "turnusuke" svarer til et tall 1-19 ut ifra grunnturnusen. Feks er avspaseringsuken turnusuke 10 </h2>
 <div class="grid">
 <label>Turnusuke<input type="number" id="n0" min="1" value="1"></label>
-<label>starter i uke nr.<input type="number" id="w0" min="1" max="53" value="35"></label>
+<label>starter i kalenderuke nr.<input type="number" id="w0" min="1" max="53" value="35"></label>
 <label>i år<input type="number" id="y0" min="2000" max="2100" value="2026"></label></div>
 <p class="mut" style="margin:4px 0 12px" id="s0"></p>
 <div class="grid">
-<label>Slutt: til og med uke nr.<input type="number" id="w1" min="1" max="53" value="25"></label>
+<label>Slutt: til og med kalenderuke nr.<input type="number" id="w1" min="1" max="53" value="25"></label>
 <label>i år<input type="number" id="y1" min="2000" max="2100" value="2027"></label>
 <label>Påminnelse før vakt<select id="al"><option value="">Ingen</option><option value="30">30 min</option><option value="60">1 time</option><option value="120">2 timer</option><option value="720">12 timer</option></select></label></div>
 <p class="mut" style="margin:4px 0 12px" id="s1"></p>
