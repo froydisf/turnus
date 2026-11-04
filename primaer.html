@@ -28,12 +28,13 @@ summary{cursor:pointer}.err{color:var(--err)}.ok{color:var(--ok)}
 </style></head><body><main>
 <p style="margin:0"><a href="./" style="color:var(--ac)">← Tilbake til forsiden</a></p>
 <h1>Primærvakt – turnus til kalender</h1>
-<p class="mut">Her kan du lage en personlig nedlastbar kalenderfil for turnusen din. Da slipper du legge inn manuelt eller vente på at vaktene blir lagt inn i mingat :-)</p>
-<div class="card"><h2>1. I hvilken kalenderuke skal turnusen starte, og hvor lenge skal den gå? Merk at "turnusuke" svarer til et tall 1-19 ut ifra grunnturnusen. Feks er avspaseringsuken turnusuke 10</h2>
+<p class="mut">Lager kalenderfiler (.ics) for hver ansatt ut fra grunnturnusen. Alt skjer i nettleseren din, og ingenting lagres noe sted.</p>
+
+<div class="card"><h2>1. Når starter turnusen, og hvor lenge skal den gå?</h2>
 <div class="grid">
-<label>Turnusuke (1-19)<input type="number" id="n0" min="1" value="1"></label>
-<label>Starter i uke nr.<input type="number" id="w0" min="1" max="53" value="35"></label>
-<label>År<input type="number" id="y0" min="2000" max="2100" value="2026"></label></div>
+<label>Turnusuke<input type="number" id="n0" min="1" value="1"></label>
+<label>starter i uke nr.<input type="number" id="w0" min="1" max="53" value="35"></label>
+<label>i år<input type="number" id="y0" min="2000" max="2100" value="2026"></label></div>
 <p class="mut" style="margin:4px 0 12px" id="s0"></p>
 <div class="grid">
 <label>Slutt: til og med uke nr.<input type="number" id="w1" min="1" max="53" value="25"></label>
@@ -42,7 +43,7 @@ summary{cursor:pointer}.err{color:var(--err)}.ok{color:var(--ok)}
 <p class="mut" style="margin:4px 0 12px" id="s1"></p>
 <label>Navn (valgfritt, brukes i kalendernavn og filnavn)<input type="text" id="nm" placeholder="f.eks. Kari Nordmann"></label>
 <label style="margin:4px 0 8px"><input type="checkbox" id="fri" style="width:auto"> Legg inn «fri e. vakt» som heldagshendelse «Fri etter nattevakt»</label>
-<p class="mut">Ukenumre er vanlige norske ukenumre (ISO). Etter siste turnusuke (uke 19) starter turnusen på uke 1 igjen.</p>
+<p class="mut">Ukenumre er vanlige norske ukenumre (ISO). Etter siste turnusuke starter turnusen på uke 1 igjen.</p>
 <div id="msg"></div></div>
 
 <div class="card"><h2>2. Forhåndsvisning og nedlasting</h2>
@@ -64,8 +65,8 @@ summary{cursor:pointer}.err{color:var(--err)}.ok{color:var(--ok)}
 const $=id=>document.getElementById(id),pad=n=>String(n).padStart(2,"0");
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const DAYS=["Man","Tir","Ons","Tor","Fre","Lør","Søn"];
-let ROT=[["A","A","A","A","A","",""],["D","D","D","D","D","",""],["D","D","D","D","D","",""],["D","NV","fri e. vakt","D","FD","",""],["FD","DV1*","FD","A","DV1*","NVL",""],["D","D","D","D","D","",""],["D","D","D","D","D","",""],["DD","FD","NV","fri e. vakt","D","",""],["D","D","D","D","D","",""],["Cyt1","Cyt1","Cyt1","Cyt1","Cyt1","",""],["D","D","D","D","D","",""],["NV","fri e. vakt","FD","FD","DD","","NVS"],["fri e. vakt","FD","DV1*","D","A","",""],["D","D","D","D","D","",""],["D","D","D","D","D","",""],["A","FD","FD","DV1","NVF","fri e. vakt",""],["D","D","D","D","D","",""],["D","D","D","D","D","",""],["DV1","DD","DD","NV","fri e. vakt","",""]];
-const CODES={FD:["08:00","16:30","Fordypning"],forskning:["08:00","16:30","Forskning"],NVF:["15:30","09:30","Nattevakt fredag"],NVL:["15:30","09:30","Nattevakt lørdag"],D:["08:00","16:30","D, seksjon"],DD:["08:00","16:30","Disponibel, DD"],DV1:["08:00","16:30","DV1"],Cyt1:["08:00","16:30","Cyt1"],Cyt2:["08:00","16:30","Cyt2"],NVS:["15:30","08:30","Nattevakt søndag"],NV:["15:30","08:30","Nattevakt"],A:["","","Avspasering"]};
+let ROT=[["D","D","D","D","D","",""],["NV","fri e. vakt","FD","FD","DD","","NVS"],["fri e. vakt","FD","DV1*","D","A","",""],["D","D","D","D","D","",""],["D","D","D","D","D","",""],["A","FD","FD","DV1","NVF","fri e. vakt",""],["D","D","D","D","D","",""],["D","D","D","D","D","",""],["DV1","DD","DD","NV","fri e. vakt","",""],["A","A","A","A","A","",""],["D","D","D","D","D","",""],["D","D","D","D","D","",""],["D","NV","fri e. vakt","D","FD","",""],["FD","DV1*","FD","A","DV1*","NVL",""],["D","D","D","D","D","",""],["D","D","D","D","D","",""],["DD","FD","NV","fri e. vakt","D","",""],["D","D","D","D","D","",""],["Cyt1","Cyt1","Cyt1","Cyt1","Cyt1","",""]];
+const CODES={FD:["08:00","16:30","Dagvakt FD"],forskning:["08:00","16:30","Forskning"],NVF:["15:30","09:30","Nattevakt fredag"],NVL:["15:30","09:30","Nattevakt lørdag"],D:["08:00","16:30","Dagvakt"],DD:["08:00","16:30","Dagvakt DD"],DV1:["08:00","16:30","Dagvakt DV1"],DV2:["08:00","16:30","Dagvakt DV2"],Cyt1:["08:00","16:30","Cyt1"],Cyt2:["08:00","16:30","Cyt2"],DS:["09:00","16:00","Dagvakt søndag"],DL:["09:00","16:00","Dagvakt lørdag"],NVS:["15:30","08:30","Nattevakt søndag"],NV:["15:30","08:30","Nattevakt"],A:["","","Avspasering"],Jul:["","","Jul"],Nyttår:["","","Nyttår"]};
 
 function norm(c){return String(c||"").replace(/\*/g,"").trim().toLowerCase()}
 function lookup(c){const n=norm(c);return Object.keys(CODES).find(k=>k.toLowerCase()===n)}
@@ -97,13 +98,13 @@ function build(off,d0,nw,withFri){
     for(let d=0;d<7;d++){const raw=String(ROT[wk][d]||"").trim();if(!raw)continue;
       const base=new Date(d0.getTime()+(w*7+d)*864e5);
       if(/^fri/i.test(raw)){if(withFri)ev.push({day:base,allday:1,title:"Fri etter nattevakt",code:"fri"});continue}
-      const k=lookup(raw);if(!k){unk.add(raw);continue}
-      const[s,e,t]=CODES[k];
-      if(k==="A"||!s){ev.push({day:base,allday:1,title:t||k,code:k});continue}
+      const parts=raw.split("/"),extra=parts.slice(1).join("/").trim(),k=lookup(parts[0]);if(!k){unk.add(raw);continue}
+      const[s,e,t0]=CODES[k],t=(t0||k)+(extra?" – "+extra:"");
+      if(!s){ev.push({day:base,allday:1,title:t,code:k+extra});continue}
       const a=tp(s),b=tp(e);if(!a||!b){unk.add(raw+" (ugyldig tid)");continue}
       const st=new Date(base.getTime()+(a[0]*60+a[1])*6e4);let en=new Date(base.getTime()+(b[0]*60+b[1])*6e4);
       if(en<=st)en=new Date(en.getTime()+864e5);
-      ev.push({start:st,end:en,title:t||k,code:k});
+      ev.push({start:st,end:en,title:t,code:k+extra});
     }}
   return{ev,unk};
 }
