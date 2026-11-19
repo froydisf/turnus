@@ -124,7 +124,7 @@ function update(){
     if(nw<1)err.push("Sluttuken må komme etter startuken.");else P={n0,m0,nw}}
   $("msg").innerHTML=err.length?'<span class="err">'+err.map(esc).join("<br>")+"</span>":'<span class="ok">'+P.nw+" uker, "+(P.nw/ROT.length).toFixed(1).replace(".",",")+" turnussykluser.</span>";
   if(!P){$("pv").innerHTML="";return}
-  const{unk}=build(P.n0,P.m0,P.nw,$("fri").checked),rows=[],sh=Math.min(P.nw,6);
+  const{unk}=build(P.n0,P.m0,P.nw,$("fri").checked),rows=[],sh=Math.min(P.nw,ROT.length);
   for(let w=0;w<sh;w++){const wk=(P.n0-1+w)%ROT.length,dd=new Date(P.m0.getTime()+w*7*864e5),iw=isoWeekOf(dd);rows.push("<tr><td>Uke "+iw[1]+" ("+pad(dd.getUTCDate())+"."+pad(dd.getUTCMonth()+1)+")</td><td>"+(wk+1)+"</td>"+ROT[wk].map(c=>"<td>"+esc(c)+"</td>").join("")+"</tr>")}
   $("pv").innerHTML="<tr><th>Kalenderuke</th><th>Turnusuke</th>"+DAYS.map(d=>"<th>"+d+"</th>").join("")+"</tr>"+rows.join("")+(P.nw>sh?"<tr><td class='mut' colspan='9'>… og "+(P.nw-sh)+" uker til</td></tr>":"");
   if(unk.size)$("msg").innerHTML+='<br><span class="err">Ukjente koder blir hoppet over: '+[...unk].map(esc).join(", ")+"</span>";
