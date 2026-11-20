@@ -160,7 +160,7 @@ async function save(name,blob){
   const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();a.remove();
 }
 $("dl").onclick=async()=>{
-  if(!P){$("dmsg").innerHTML='<span class="err">Rett opp feilene i punkt 3 først.</span>';return}
+  if(!P){$("dmsg").innerHTML='<span class="err">Rett opp feilene i punkt 1 først.</span>';return}
   $("dmsg").innerHTML="";const nm=safe($("nm").value.trim()||"turnus"),z=new JSZip();z.file(nm+".ics",ics());
   await save("vakter_"+nm+".zip",await z.generateAsync({type:"blob"}));
 };
